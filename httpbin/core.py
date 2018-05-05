@@ -14,6 +14,7 @@ import random
 import time
 import uuid
 import argparse
+import pkg_resources
 
 from flask import (
     Flask,
@@ -217,6 +218,8 @@ def before_request():
 def set_cors_headers(response):
     response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", "*")
     response.headers["Access-Control-Allow-Credentials"] = "true"
+    version = pkg_resources.require("httpbin")[0].version
+    response.headers['X-Powered-By'] = 'httpbin/' + version
 
     if request.method == "OPTIONS":
         # Both of these headers are only used for the "preflight request"
